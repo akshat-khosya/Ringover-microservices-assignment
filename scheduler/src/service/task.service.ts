@@ -53,19 +53,40 @@ const getSchedule = async () => {
 
         });
         let temp = tasks;
-        let temp1:any[]=[];
-        tasks.forEach((task,index)=>{
-            if(task.dep!=="nil"){
-                temp1.push(task);
-                temp.splice(index,1);
+        let temp1: any[] = [];
+        tasks.forEach((task, index) => {
+            if (task.dep !== "nil") {
+                let dep = parseInt(task.dep);
+                let depTask = temp.find((t) => t.jobId === dep);
+                if (depTask) {
+                    let h2 = {
+                        hour: parseInt(task.time_stamp.split(":")[0]),
+                        minute: parseInt(task.time_stamp.split(":")[1])
+                    }
+                    let h1 = {
+                        hour: parseInt(depTask.time_stamp.split(":")[0]),
+                        minute: parseInt(depTask.time_stamp.split(":")[1])
+                    }
+                    if (h2.hour > h1.hour) {
+                        temp1.push(task);
+                        temp.splice(index, 1);
+                    } else if (h2.hour === h1.hour) {
+                        if (h2.minute > h1.minute) {
+                            temp1.push(task);
+                            temp.splice(index, 1);
+                        }
+                    }
+                }
+
+
             }
-        })  
-        temp1.forEach((task)=>{
+        })
+        temp1.forEach((task) => {
             let dep = parseInt(task.dep);
-            let depIndex = temp.findIndex((t)=>t.jobId===dep);
+            let depIndex = temp.findIndex((t) => t.jobId === dep);
             log.info(depIndex);
-            if(depIndex!==-1){
-                temp.splice(depIndex+1,0,task);
+            if (depIndex !== -1) {
+                temp.splice(depIndex + 1, 0, task);
             }
         });
         return temp;

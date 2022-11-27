@@ -19,7 +19,6 @@ Task.init({
     jobId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
     },
     taskType: {
         type: DataTypes.STRING,
