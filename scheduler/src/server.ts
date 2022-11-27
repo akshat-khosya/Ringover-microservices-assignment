@@ -12,13 +12,20 @@ const app = createServer();
 
 let queue = new Queue();
 
-sequelize.authenticate();
 
 
-queue.consume('tasks');
 
-app.listen(port, async()=>{
+
+app.listen(port, async () => {
     log.info(`Server started on port ${port}`);
     routes(app);
+    sequelize.authenticate()
+        .then(() => {
+            log.info('Connection has been established successfully.');
+        })
+        .catch(err => {
+            log.error('Unable to connect to the database:', err);
+        });
 
+    queue.consume('tasks');
 });
