@@ -71,6 +71,11 @@ sms/
     package.json
 ```
 
+## Flow Diagram
+
+![Flow Diagram](./flowdiagram.png)
+
+
 # Author
 
 [Akshat Khosya](https://github.com/akshat-khosya)
